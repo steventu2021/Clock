@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <style>
+      @font-face {
+        font-family: "TrajanPro-Regular";
+        src: url(./TrajanPro-Regular.ttf);
+      }
+      * {
+        padding: 0px;
+        margin: 0px;
+        box-sizing: border-box;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #091921;
+      }
+
+      .clock {
+        position: relative;
+        display: flex;
+        width: 400px;
+        height: 400px;
+        border-radius: 50%;
+        justify-content: center;
+        align-items: center;
+        border: 3px solid white;
+      }
+      .clocknum {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 20px;
+        cursor: pointer;
+        color: white;
+        font-weight: 800;
+        font-size: 20px;
+        font-family: "TrajanPro-Regular";
+      }
+      .center {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        justify-content: center;
+        align-items: center;
+        background-color: white;
+        border-radius: 50%;
+        left: 187px;
+        top: 187px;
+        z-index: 100;
+      }
+      .clock .hour,
+      .clock .min,
+      .clock .sec {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .clock .hour,
+      .hr {
+        width: 190px;
+        height: 190px;
+      }
+
+      .clock .min,
+      .mn {
+        width: 220px;
+        height: 280px;
+      }
+      .clock .sec,
+      .sc {
+        width: 270px;
+        height: 330px;
+      }
+      .hr,
+      .mn,
+      .sc {
+        display: flex;
+        justify-content: center;
+        align-items: start;
+      }
+
+      .hr:before {
+        content: "";
+        position: absolute;
+        width: 8px;
+        height: 100px;
+        background: #fff;
+        border-radius: 10px 10px 0px 0px;
+        z-index: 5;
+      }
+
+      .mn:before {
+        content: "";
+        position: absolute;
+        width: 8px;
+        height: 140px;
+        background: lightgray;
+        border-radius: 10px;
+        z-index: 4;
+      }
+      .sc:before {
+        content: "";
+        position: absolute;
+        width: 4px;
+        height: 180px;
+        background: darkgrey;
+        border-radius: 10px;
+        z-index: 3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="clock">
+      <div class="center"></div>
+      <div class="hour">
+        <div class="hr" id="hr"></div>
+      </div>
+      <div class="min">
+        <div class="mn" id="mn"></div>
+      </div>
+      <div class="sec">
+        <div class="sc" id="sc"></div>
+      </div>
+    </div>
+
+    <script>
+      const clock = document.querySelector(".clock");
+      const clocknum = 12;
+      const unitAng = (Math.PI * 2) / clocknum;
+
+      for (let i = 0; i < clocknum; i++) {
+        const c = document.createElement("div");
+        c.className = "clocknum";
+        c.innerHTML = i + 1;
+        c.style.left =
+          197 - 10 + 177 * Math.cos(unitAng * i - Math.PI / 3) + "px";
+        c.style.top =
+          197 - 10 + 177 * Math.sin(unitAng * i - Math.PI / 3) + "px";
+        clock.append(c);
+      }
+      setInterval(() => {
+        const deg = 6; //360度除以6
+        const hr = document.querySelector("#hr");
+        const mn = document.querySelector("#mn");
+        const sc = document.querySelector("#sc");
+
+        let day = new Date();
+        let hh = day.getHours() * 30;
+        let mm = day.getMinutes() * deg;
+        let ss = day.getSeconds() * deg;
+
+        //每個指針上加入tranform:rotateZ
+        hr.style.transform = `rotateZ(${hh + mm / 12}deg)`;
+        mn.style.transform = `rotateZ(${mm}deg)`;
+        sc.style.transform = `rotateZ(${ss}deg)`;
+      }, 1000);
+    </script>
+  </body>
+</html>
